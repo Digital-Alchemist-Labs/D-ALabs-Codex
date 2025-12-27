@@ -1,0 +1,87 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "D-ALabs Study",
+  "theme": "mint",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#6366F1",
+    "light": "#818CF8",
+    "dark": "#4F46E5"
+  },
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/D-ALabs"
+    }
+  ],
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "홈",
+        "url": "/introduction",
+        "pages": ["introduction", "team"]
+      },
+      {
+        "tab": "Next.js",
+        "icon": "react",
+        "url": "/nextjs",
+        "groups": [
+          {
+            "group": "시작하기",
+            "pages": [
+              "nextjs/index",
+              "nextjs/introduction",
+              "nextjs/installation",
+              "nextjs/quick-start"
+            ]
+          },
+          {
+            "group": "Deep Dive",
+            "pages": ["nextjs/routing", "nextjs/data-fetching"]
+          }
+        ]
+      },
+      {
+        "tab": "TypeScript",
+        "icon": "code",
+        "url": "/typescript",
+        "groups": [
+          {
+            "group": "시작하기",
+            "pages": ["typescript/index", "typescript/introduction"]
+          },
+          {
+            "group": "Deep Dive",
+            "pages": ["typescript/basic-types", "typescript/best-practices"]
+          }
+        ]
+      },
+      {
+        "tab": "API 설계",
+        "icon": "plug",
+        "url": "/api-design",
+        "groups": [
+          {
+            "group": "시작하기",
+            "pages": ["api-design/index", "api-design/introduction"]
+          },
+          {
+            "group": "Deep Dive",
+            "pages": ["api-design/rest-principles"]
+          }
+        ]
+      }
+    ]
+  },
+  "footerSocials": {
+    "github": "https://github.com/D-ALabs"
+  },
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": true
+  }
+}

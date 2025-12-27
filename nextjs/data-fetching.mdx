@@ -1,0 +1,145 @@
+---
+title: "데이터 페칭"
+description: "Next.js에서 서버와 클라이언트에서 데이터를 가져오는 방법을 알아봅니다."
+icon: "database"
+---
+
+# 데이터 페칭
+
+Next.js App Router에서 데이터를 가져오는 다양한 방법을 알아봅니다.
+
+## 서버 컴포넌트에서 데이터 페칭
+
+서버 컴포넌트에서는 `async/await`를 직접 사용할 수 있습니다:
+
+```tsx
+async function getData() {
+  const res = await fetch("https://api.example.com/data");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+export default async function Page() {
+  const data = await getData();
+
+  return <main>{/* data 렌더링 */}</main>;
+}
+```
+
+<Check>
+  서버 컴포넌트에서의 데이터 페칭은 자동으로 최적화되며, 클라이언트로 JavaScript
+  번들이 전송되지 않습니다.
+</Check>
+
+## 캐싱과 재검증
+
+### 정적 데이터 (기본)
+
+```tsx
+// 이 데이터는 빌드 시 캐시됩니다
+const data = await fetch("https://api.example.com/data");
+```
+
+### 시간 기반 재검증
+
+```tsx
+// 3600초(1시간)마다 재검증
+const data = await fetch("https://api.example.com/data", {
+  next: { revalidate: 3600 },
+});
+```
+
+### 캐시 무효화
+
+```tsx
+// 항상 최신 데이터
+const data = await fetch("https://api.example.com/data", {
+  cache: "no-store",
+});
+```
+
+<Accordion title="캐싱 전략 비교">
+  | 옵션 | 설명 | 사용 사례 | |------|------|----------| | 기본 (캐시) | 빌드 시
+  캐시, 재배포 전까지 유지 | 정적 콘텐츠 | | `revalidate` | 지정된 시간 후
+  재검증 | 자주 변경되는 데이터 | | `no-store` | 캐시 없이 항상 새로 요청 |
+  실시간 데이터 |
+</Accordion>
+
+## 병렬 데이터 페칭
+
+여러 데이터를 동시에 가져와 성능을 최적화합니다:
+
+```tsx
+async function Page() {
+  // 병렬로 실행
+  const [user, posts] = await Promise.all([getUser(), getPosts()]);
+
+  return (
+    <>
+      <UserProfile user={user} />
+      <PostList posts={posts} />
+    </>
+  );
+}
+```
+
+<Tip>
+  `Promise.all`을 사용하면 순차 실행 대비 응답 시간을 크게 단축할 수 있습니다.
+</Tip>
+
+## 스트리밍과 Suspense
+
+```tsx
+import { Suspense } from "react";
+
+export default function Page() {
+  return (
+    <main>
+      <h1>Dashboard</h1>
+      <Suspense fallback={<Loading />}>
+        <SlowComponent />
+      </Suspense>
+    </main>
+  );
+}
+```
+
+<Note>
+  Suspense를 사용하면 느린 컴포넌트가 로드되는 동안 페이지의 나머지 부분을 먼저
+  표시할 수 있습니다.
+</Note>
+
+## 클라이언트에서 데이터 페칭
+
+클라이언트 컴포넌트에서는 SWR이나 React Query를 권장합니다:
+
+```tsx
+"use client";
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+export default function Profile() {
+  const { data, error, isLoading } = useSWR("/api/user", fetcher);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading data</div>;
+
+  return <div>Hello, {data.name}!</div>;
+}
+```
+
+## 데이터 페칭 패턴 요약
+
+<CardGroup cols={2}>
+  <Card title="서버 컴포넌트" icon="server">
+    초기 로딩 시 필요한 데이터에 적합. SEO와 성능에 유리합니다.
+  </Card>
+  <Card title="클라이언트 컴포넌트" icon="browser">
+    사용자 인터랙션 후 데이터 페칭에 적합. 실시간 업데이트에 유리합니다.
+  </Card>
+</CardGroup>

@@ -1,0 +1,157 @@
+---
+title: "기본 타입"
+description: "TypeScript의 기본 타입들을 알아봅니다."
+icon: "shapes"
+---
+
+# 기본 타입
+
+TypeScript의 기본 타입 시스템을 알아봅니다.
+
+## 원시 타입
+
+### string, number, boolean
+
+```typescript
+const name: string = "John";
+const age: number = 25;
+const isActive: boolean = true;
+```
+
+### null과 undefined
+
+```typescript
+const nothing: null = null;
+const notDefined: undefined = undefined;
+```
+
+## 배열
+
+```typescript
+const numbers: number[] = [1, 2, 3];
+const strings: Array<string> = ["a", "b", "c"];
+```
+
+<Tip>
+  `number[]`와 `Array<number>`는 동일한 의미입니다. 간결한 `number[]` 표기를 더 많이 사용합니다.
+</Tip>
+
+## 튜플
+
+고정된 길이와 타입을 가진 배열:
+
+```typescript
+const tuple: [string, number] = ["hello", 10];
+
+// React useState의 반환 타입도 튜플
+const [count, setCount]: [number, (n: number) => void] = useState(0);
+```
+
+## 객체
+
+```typescript
+// 인라인 타입
+const user: { name: string; age: number } = {
+  name: "John",
+  age: 25,
+};
+
+// interface 사용
+interface User {
+  name: string;
+  age: number;
+  email?: string; // 선택적 속성
+}
+
+const user2: User = {
+  name: "Jane",
+  age: 30,
+};
+```
+
+<Note>`?`를 사용하면 선택적(optional) 속성을 정의할 수 있습니다.</Note>
+
+## 유니온 타입
+
+여러 타입 중 하나:
+
+```typescript
+type Status = "pending" | "approved" | "rejected";
+
+function setStatus(status: Status) {
+  // ...
+}
+
+setStatus("pending"); // OK
+setStatus("invalid"); // Error
+```
+
+<Check>
+  유니온 타입은 리터럴 타입과 결합하여 특정 값만 허용하는 타입을 만들 수
+  있습니다.
+</Check>
+
+## any와 unknown
+
+<CodeGroup>
+
+```typescript any
+// any - 타입 검사 비활성화 (사용 자제)
+let anything: any = "hello";
+anything = 123;
+anything.foo.bar; // 오류 없음
+```
+
+```typescript unknown
+// unknown - 타입 안전한 any
+let something: unknown = "hello";
+// something.toUpperCase(); // Error
+if (typeof something === "string") {
+  something.toUpperCase(); // OK
+}
+```
+
+</CodeGroup>
+
+<Warning>
+  `any`는 타입 시스템의 이점을 완전히 무효화하므로 가능한 사용을 피하세요. 대신
+  `unknown`을 사용하고 타입 가드로 좁히세요.
+</Warning>
+
+## 타입 추론
+
+TypeScript는 타입을 자동으로 추론합니다:
+
+```typescript
+let message = "hello"; // string으로 추론
+let count = 10; // number로 추론
+
+const config = {
+  apiUrl: "https://api.example.com",
+  timeout: 5000,
+}; // { apiUrl: string; timeout: number }로 추론
+```
+
+<Info>
+  명시적 타입 선언이 필요 없는 경우 TypeScript의 타입 추론을 활용하면 코드를 더
+  간결하게 유지할 수 있습니다.
+</Info>
+
+## 타입 요약
+
+| 타입      | 설명               | 예시                   |
+| --------- | ------------------ | ---------------------- |
+| `string`  | 문자열             | `"hello"`              |
+| `number`  | 숫자               | `42`, `3.14`           |
+| `boolean` | 불리언             | `true`, `false`        |
+| `array`   | 배열               | `number[]`, `string[]` |
+| `tuple`   | 고정 길이 배열     | `[string, number]`     |
+| `object`  | 객체               | `{ name: string }`     |
+| `any`     | 모든 타입 (비권장) | -                      |
+| `unknown` | 안전한 모든 타입   | -                      |
+
+## 다음 단계
+
+<Card title="베스트 프랙티스" icon="medal" href="/typescript/best-practices">
+  TypeScript 베스트 프랙티스를 알아보세요.
+</Card>

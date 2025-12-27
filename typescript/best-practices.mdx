@@ -1,0 +1,199 @@
+---
+title: "TypeScript 베스트 프랙티스"
+description: "2024년 TypeScript 베스트 프랙티스를 알아봅니다."
+icon: "medal"
+---
+
+# TypeScript 베스트 프랙티스
+
+프로덕션 환경에서 TypeScript를 효과적으로 사용하기 위한 베스트 프랙티스입니다.
+
+## 1. strict 모드 사용
+
+`tsconfig.json`에서 strict 모드를 활성화하세요:
+
+```json
+{
+  "compilerOptions": {
+    "strict": true
+  }
+}
+```
+
+<Check>`strict` 모드는 더 안전한 코드를 작성하도록 도와줍니다.</Check>
+
+## 2. any 사용 지양
+
+<CodeGroup>
+
+```typescript ❌ Bad
+function processData(data: any) {
+  return data.value;
+}
+```
+
+```typescript ✅ Good
+interface Data {
+  value: string;
+}
+
+function processData(data: Data) {
+  return data.value;
+}
+```
+
+</CodeGroup>
+
+## 3. 타입 가드 활용
+
+```typescript
+// 사용자 정의 타입 가드
+function isString(value: unknown): value is string {
+  return typeof value === "string";
+}
+
+function process(value: unknown) {
+  if (isString(value)) {
+    // value는 string 타입
+    console.log(value.toUpperCase());
+  }
+}
+```
+
+<Tip>타입 가드를 사용하면 런타임에서 타입을 좁힐 수 있습니다.</Tip>
+
+## 4. const assertion
+
+```typescript
+// 리터럴 타입으로 추론
+const config = {
+  endpoint: "/api",
+  method: "GET",
+} as const;
+
+// config.method는 "GET" 타입 (string이 아님)
+```
+
+<Info>
+  `as const`를 사용하면 객체의 모든 속성이 readonly이고 리터럴 타입으로
+  추론됩니다.
+</Info>
+
+## 5. 유틸리티 타입 활용
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
+// 일부 속성만 선택
+type PublicUser = Pick<User, "id" | "name">;
+
+// 일부 속성 제외
+type UserWithoutPassword = Omit<User, "password">;
+
+// 모든 속성을 선택적으로
+type PartialUser = Partial<User>;
+
+// 모든 속성을 필수로
+type RequiredUser = Required<User>;
+```
+
+<Accordion title="주요 유틸리티 타입">
+  | 타입 | 설명 |
+  |------|------|
+  | `Partial<T>` | 모든 속성을 선택적으로 |
+  | `Required<T>` | 모든 속성을 필수로 |
+  | `Pick<T, K>` | 특정 속성만 선택 |
+  | `Omit<T, K>` | 특정 속성 제외 |
+  | `Record<K, V>` | 키-값 쌍 객체 타입 |
+  | `Exclude<T, U>` | 유니온에서 특정 타입 제외 |
+  | `Extract<T, U>` | 유니온에서 특정 타입만 추출 |
+</Accordion>
+
+## 6. 명확한 반환 타입
+
+<CodeGroup>
+
+```typescript ❌ Bad
+// 추론에 의존
+function getUser(id: number) {
+  return { id, name: "John" };
+}
+```
+
+```typescript ✅ Good
+// 명시적 반환 타입
+interface User {
+  id: number;
+  name: string;
+}
+
+function getUser(id: number): User {
+  return { id, name: "John" };
+}
+```
+
+</CodeGroup>
+
+<Note>공개 API 함수에서는 명시적 반환 타입을 선언하는 것이 좋습니다.</Note>
+
+## 7. 브랜디드 타입
+
+```typescript
+type UserId = string & { readonly brand: unique symbol };
+type PostId = string & { readonly brand: unique symbol };
+
+function createUserId(id: string): UserId {
+  return id as UserId;
+}
+
+function getUser(id: UserId) {
+  /* ... */
+}
+function getPost(id: PostId) {
+  /* ... */
+}
+
+const userId = createUserId("123");
+getUser(userId); // OK
+// getPost(userId); // Error - 타입이 다름
+```
+
+<Warning>
+  브랜디드 타입은 구조적으로 동일한 타입을 명목적으로 구분할 때 유용합니다.
+</Warning>
+
+## 8. 제네릭 제약 조건
+
+```typescript
+// 특정 속성을 가진 타입으로 제한
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const user = { name: "John", age: 25 };
+getProperty(user, "name"); // OK
+// getProperty(user, "invalid"); // Error
+```
+
+## 베스트 프랙티스 체크리스트
+
+<Steps>
+  <Step title="strict 모드 활성화">
+    `tsconfig.json`에서 `strict: true` 설정
+  </Step>
+  <Step title="any 제거">코드베이스에서 `any` 사용 최소화</Step>
+  <Step title="타입 가드 사용">
+    `unknown` 타입과 타입 가드로 안전하게 타입 좁히기
+  </Step>
+  <Step title="유틸리티 타입 활용">중복 타입 정의 대신 유틸리티 타입 사용</Step>
+  <Step title="명시적 반환 타입">공개 API에 명시적 반환 타입 선언</Step>
+</Steps>
+
+## 결론
+
+이러한 베스트 프랙티스를 따르면 타입 안전성을 높이고, 버그를 미리 방지하며, 코드의 가독성과 유지보수성을 향상시킬 수 있습니다.

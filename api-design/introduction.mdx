@@ -1,0 +1,113 @@
+---
+title: "API 설계 소개"
+description: "좋은 API 설계의 기본 원칙과 중요성을 알아봅니다."
+icon: "plug"
+---
+
+# API 설계 소개
+
+좋은 API는 사용하기 쉽고, 이해하기 쉬우며, 확장하기 쉬워야 합니다.
+
+## API란?
+
+API(Application Programming Interface)는 소프트웨어 컴포넌트 간의 인터페이스입니다. 웹 API는 HTTP를 통해 서로 다른 시스템 간의 통신을 가능하게 합니다.
+
+## 좋은 API의 특징
+
+### 1. 직관적
+
+<CodeGroup>
+
+```text ✅ 좋은 예
+GET /users/123
+POST /users
+DELETE /users/123
+```
+
+```text ❌ 나쁜 예
+GET /getUser?id=123
+POST /createNewUser
+GET /removeUser/123
+```
+
+</CodeGroup>
+
+### 2. 일관성
+
+모든 엔드포인트가 같은 규칙을 따릅니다:
+
+<CardGroup cols={2}>
+  <Card title="명명 규칙" icon="signature">
+    일관된 URL 구조와 리소스 이름
+  </Card>
+  <Card title="에러 응답 형식" icon="triangle-exclamation">
+    통일된 에러 응답 스키마
+  </Card>
+  <Card title="페이지네이션 방식" icon="list">
+    일관된 페이지네이션 파라미터
+  </Card>
+  <Card title="인증 방식" icon="lock">
+    통일된 인증 메커니즘
+  </Card>
+</CardGroup>
+
+### 3. 버전 관리
+
+```text
+/api/v1/users
+/api/v2/users
+```
+
+<Tip>
+  API 버저닝을 통해 기존 클라이언트를 깨뜨리지 않으면서 새로운 기능을 추가할 수
+  있습니다.
+</Tip>
+
+### 4. 문서화
+
+```yaml
+openapi: 3.0.0
+paths:
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successful response
+```
+
+<Info>
+  OpenAPI(Swagger) 스펙을 사용하면 API 문서를 자동으로 생성하고 유지할 수
+  있습니다.
+</Info>
+
+## API 설계 프로세스
+
+<Steps>
+  <Step title="요구사항 분석">클라이언트가 필요로 하는 것을 파악합니다.</Step>
+  <Step title="리소스 식별">도메인 엔티티를 정의합니다.</Step>
+  <Step title="엔드포인트 설계">URL 구조와 HTTP 메서드를 결정합니다.</Step>
+  <Step title="데이터 모델링">요청/응답 스키마를 정의합니다.</Step>
+  <Step title="에러 처리">일관된 에러 응답 형식을 설계합니다.</Step>
+  <Step title="문서화">API 문서를 작성합니다.</Step>
+</Steps>
+
+## API 스타일 비교
+
+| 스타일  | 특징                              | 적합한 경우            |
+| ------- | --------------------------------- | ---------------------- |
+| REST    | 리소스 중심, HTTP 메서드 활용     | 일반적인 CRUD 작업     |
+| GraphQL | 클라이언트가 필요한 데이터만 요청 | 복잡한 데이터 관계     |
+| gRPC    | 바이너리 프로토콜, 높은 성능      | 마이크로서비스 간 통신 |
+
+## 다음 단계
+
+<Card title="REST 원칙" icon="network-wired" href="/api-design/rest-principles">
+  RESTful API의 핵심 원칙을 알아보세요.
+</Card>

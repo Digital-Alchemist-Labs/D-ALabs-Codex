@@ -1,0 +1,7 @@
+<svg width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="8" fill="#818CF8"/>
+  <path d="M8 16L14 10L20 16L14 22L8 16Z" fill="white"/>
+  <path d="M12 16L18 10L24 16L18 22L12 16Z" fill="white" fill-opacity="0.6"/>
+  <text x="40" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="#F9FAFB">D-ALabs</text>
+</svg>
+

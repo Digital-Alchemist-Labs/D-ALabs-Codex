@@ -1,0 +1,110 @@
+---
+title: "TypeScript 소개"
+description: "TypeScript의 기본 개념과 JavaScript와의 차이점을 알아봅니다."
+icon: "code"
+---
+
+# TypeScript 소개
+
+TypeScript는 JavaScript에 정적 타입을 추가한 프로그래밍 언어입니다.
+
+## TypeScript란?
+
+TypeScript는 Microsoft에서 개발한 오픈소스 언어로, JavaScript의 상위 집합(superset)입니다. 모든 JavaScript 코드는 유효한 TypeScript 코드입니다.
+
+<Info>
+  TypeScript는 컴파일 타임에 타입 오류를 잡아주어 런타임 버그를 사전에
+  방지합니다.
+</Info>
+
+## 왜 TypeScript인가?
+
+### 1. 타입 안전성
+
+<CodeGroup>
+
+```typescript JavaScript
+// JavaScript - 런타임에 오류 발생
+function add(a, b) {
+  return a + b;
+}
+add("1", 2); // "12" - 의도치 않은 결과
+```
+
+```typescript TypeScript
+// TypeScript - 컴파일 시 오류 감지
+function add(a: number, b: number): number {
+  return a + b;
+}
+add("1", 2); // Error: Argument of type 'string' is not assignable
+```
+
+</CodeGroup>
+
+### 2. 개발자 경험 향상
+
+<CardGroup cols={3}>
+  <Card title="자동 완성" icon="lightbulb">
+    IDE에서 정확한 자동 완성을 제공합니다.
+  </Card>
+  <Card title="리팩토링" icon="wrench">
+    안전한 리팩토링이 가능합니다.
+  </Card>
+  <Card title="코드 네비게이션" icon="map">
+    정의로 이동, 참조 찾기 등이 가능합니다.
+  </Card>
+</CardGroup>
+
+### 3. 문서화
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  createdAt: Date;
+}
+
+function getUser(id: number): Promise<User> {
+  // 함수 시그니처가 문서 역할
+}
+```
+
+<Tip>인터페이스와 타입을 통해 코드 자체가 문서 역할을 합니다.</Tip>
+
+## 설치
+
+```bash
+npm install -D typescript
+npx tsc --init
+```
+
+## 기본 설정
+
+`tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
+```
+
+<Accordion title="주요 컴파일러 옵션 설명">
+  | 옵션 | 설명 | |------|------| | `target` | 컴파일된 JavaScript의 ECMAScript
+  버전 | | `module` | 모듈 시스템 (CommonJS, ESNext 등) | | `strict` | 모든
+  엄격한 타입 검사 옵션 활성화 | | `esModuleInterop` | CommonJS 모듈과의 호환성
+  |
+</Accordion>
+
+## 다음 단계
+
+<Card title="기본 타입" icon="shapes" href="/typescript/basic-types">
+  TypeScript의 타입 시스템을 배워보세요.
+</Card>

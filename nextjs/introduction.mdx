@@ -1,0 +1,66 @@
+---
+title: "Next.js 소개"
+description: "Next.js가 무엇인지, 왜 사용해야 하는지 알아봅니다."
+icon: "house"
+---
+
+<Note>✍️ **작성자**: [멤버1](/team#멤버1) · **최종 수정**: 2024.01.15</Note>
+
+# Next.js 소개
+
+Next.js는 React 기반의 풀스택 웹 프레임워크입니다. Vercel에서 개발하고 유지보수하며, 현대적인 웹 애플리케이션을 빠르게 구축할 수 있도록 도와줍니다.
+
+## Next.js란?
+
+Next.js는 React 애플리케이션을 위한 프로덕션 레디 프레임워크입니다. 서버 사이드 렌더링(SSR), 정적 사이트 생성(SSG), 그리고 최신 React 18 기능을 기본적으로 지원합니다.
+
+## 왜 Next.js인가?
+
+### 1. 뛰어난 개발자 경험
+
+<CardGroup cols={3}>
+  <Card title="Zero Config" icon="gear">
+    복잡한 설정 없이 바로 시작할 수 있습니다.
+  </Card>
+  <Card title="Fast Refresh" icon="rotate">
+    코드 변경 시 즉시 반영됩니다.
+  </Card>
+  <Card title="TypeScript 지원" icon="code">
+    TypeScript가 기본 내장되어 있습니다.
+  </Card>
+</CardGroup>
+
+### 2. 성능 최적화
+
+- **자동 코드 분할**: 필요한 코드만 로드
+- **이미지 최적화**: `next/image`를 통한 자동 최적화
+- **폰트 최적화**: 웹 폰트 자동 최적화
+
+### 3. 유연한 렌더링
+
+<CodeGroup>
+
+```tsx 서버 컴포넌트
+// 서버 컴포넌트 (기본)
+async function Page() {
+  const data = await fetch("https://api.example.com/data");
+  return <div>{data}</div>;
+}
+```
+
+```tsx 클라이언트 컴포넌트
+// 클라이언트 컴포넌트
+"use client";
+function InteractiveComponent() {
+  const [count, setCount] = useState(0);
+  return <button onClick={() => setCount(count + 1)}>{count}</button>;
+}
+```
+
+</CodeGroup>
+
+## 다음 단계
+
+<Card title="설치하기" icon="download" href="/nextjs/installation">
+  Next.js 프로젝트를 설치하고 개발 환경을 설정하는 방법을 알아보세요.
+</Card>
